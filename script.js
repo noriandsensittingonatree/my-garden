@@ -122,7 +122,7 @@ popupMessage.id = 'popup-message';
 popupMessage.style.marginBottom = '15px';
 popupMessage.style.fontFamily = 'serif';
 popupMessage.style.fontSize = '18px';
-popupMessage.style.color = '#4a3f58';
+popupMessage.style.color = '#e67eb0';
 popup.appendChild(popupMessage);
 
 const closeBtn = document.createElement('button');
