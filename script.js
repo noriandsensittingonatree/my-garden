@@ -186,7 +186,7 @@ function spawnLoop() {
   createFlower(randomFlower);
 
   // spawn again in 10–15 seconds
-  const nextDelay = Math.random() * 5000 + 10000;
+  const nextDelay = Math.random() * 5000 + 0;
   setTimeout(spawnLoop, nextDelay);
 }
 
