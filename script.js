@@ -120,14 +120,14 @@ body.appendChild(popup);
 const popupMessage = document.createElement('p');
 popupMessage.id = 'popup-message';
 popupMessage.style.marginBottom = '15px';
-popupMessage.style.fontFamily = 'serif';
+popupMessage.style.fontFamily = 'Arial, sans-serif';
 popupMessage.style.fontSize = '18px';
 popupMessage.style.color = '#e67eb0';
 popup.appendChild(popupMessage);
 
 const closeBtn = document.createElement('button');
 closeBtn.textContent = 'Close';
-closeBtn.style.background = '#d8bfd8';
+closeBtn.style.background = '#e67eb0';
 closeBtn.style.border = 'none';
 closeBtn.style.padding = '8px 16px';
 closeBtn.style.borderRadius = '6px';
