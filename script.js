@@ -151,26 +151,32 @@ function createFlower(flower) {
   elem.style.top = `${Math.random() * (window.innerHeight - 100) + 40}px`;
   elem.style.left = `${Math.random() * (window.innerWidth - 100) + 40}px`;
   elem.style.cursor = 'pointer';
-  elem.style.transition = 'transform 0.5s ease';
+  elem.style.transition = 'transform 0.5s ease, opacity 1s ease';
+  elem.style.opacity = '0';
 
-  // click behavior
+  // append and fade in
+  document.body.appendChild(elem);
+  setTimeout(() => {
+    elem.classList.add('bloom');
+    elem.style.opacity = '1';
+  }, 100);
+
+  // click behavior (fade out + show popup)
   elem.addEventListener('click', () => {
-    elem.remove(); // remove flower immediately
+    elem.style.opacity = '0';
+    elem.style.transform = 'scale(0.8)';
+    setTimeout(() => elem.remove(), 1000); // wait for fade
     popupMessage.textContent = flower.message;
     popup.style.display = 'block';
   });
 
-  body.appendChild(elem);
-
-  // gentle grow-in animation
-  elem.style.transform = 'scale(0)';
+  // auto remove after 25s (fade out first)
   setTimeout(() => {
-    elem.style.transform = 'scale(1)';
-  }, 100);
-
-  // remove flower after 25 seconds
-  setTimeout(() => {
-    if (document.body.contains(elem)) elem.remove();
+    if (document.body.contains(elem)) {
+      elem.style.opacity = '0';
+      elem.style.transform = 'scale(0.8)';
+      setTimeout(() => elem.remove(), 1000); // smooth fade
+    }
   }, 25000);
 }
 
