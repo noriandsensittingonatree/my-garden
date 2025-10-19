@@ -99,29 +99,92 @@ const flowers = [
 
 const body = document.body;
 
+// Create popup container
+const popup = document.createElement('div');
+popup.id = 'popup';
+popup.style.position = 'fixed';
+popup.style.top = '50%';
+popup.style.left = '50%';
+popup.style.transform = 'translate(-50%, -50%)';
+popup.style.background = 'rgba(255, 255, 255, 0.9)';
+popup.style.border = '2px solid #d8bfd8';
+popup.style.borderRadius = '12px';
+popup.style.padding = '20px 30px';
+popup.style.textAlign = 'center';
+popup.style.maxWidth = '400px';
+popup.style.display = 'none';
+popup.style.zIndex = '999';
+popup.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.2)';
+body.appendChild(popup);
+
+const popupMessage = document.createElement('p');
+popupMessage.id = 'popup-message';
+popupMessage.style.marginBottom = '15px';
+popupMessage.style.fontFamily = 'serif';
+popupMessage.style.fontSize = '18px';
+popupMessage.style.color = '#4a3f58';
+popup.appendChild(popupMessage);
+
+const closeBtn = document.createElement('button');
+closeBtn.textContent = 'Close';
+closeBtn.style.background = '#d8bfd8';
+closeBtn.style.border = 'none';
+closeBtn.style.padding = '8px 16px';
+closeBtn.style.borderRadius = '6px';
+closeBtn.style.cursor = 'pointer';
+closeBtn.style.fontSize = '16px';
+closeBtn.addEventListener('click', () => {
+  popup.style.display = 'none';
+});
+popup.appendChild(closeBtn);
+
+// Flower creation
 function createFlower(flower) {
   const elem = document.createElement('div');
   elem.className = 'flower';
   elem.style.backgroundImage = `url(${flower.image})`;
-  elem.style.top = `${Math.random() * (window.innerHeight - 80) + 40}px`;
-  elem.style.left = `${Math.random() * (window.innerWidth - 80) + 40}px`;
+  elem.style.backgroundSize = 'contain';
+  elem.style.backgroundRepeat = 'no-repeat';
+  elem.style.width = '60px';
+  elem.style.height = '60px';
+  elem.style.position = 'absolute';
+  elem.style.top = `${Math.random() * (window.innerHeight - 100) + 40}px`;
+  elem.style.left = `${Math.random() * (window.innerWidth - 100) + 40}px`;
+  elem.style.cursor = 'pointer';
+  elem.style.transition = 'transform 0.5s ease';
 
+  // click behavior
   elem.addEventListener('click', () => {
-    elem.classList.add('bloom');
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = flower.message;
-    messageDiv.style.display = 'block';
-    setTimeout(() => messageDiv.style.display = 'none', 4000);
+    elem.remove(); // remove flower immediately
+    popupMessage.textContent = flower.message;
+    popup.style.display = 'block';
   });
 
   body.appendChild(elem);
 
-  setTimeout(() => elem.classList.add('bloom'), Math.random() * 1000);
+  // gentle grow-in animation
+  elem.style.transform = 'scale(0)';
+  setTimeout(() => {
+    elem.style.transform = 'scale(1)';
+  }, 100);
+
+  // remove flower after 25 seconds
+  setTimeout(() => {
+    if (document.body.contains(elem)) elem.remove();
+  }, 25000);
 }
 
-flowers.forEach(flower => createFlower(flower));
-
-setInterval(() => {
+// Spawn flowers continuously
+function spawnLoop() {
   const randomFlower = flowers[Math.floor(Math.random() * flowers.length)];
   createFlower(randomFlower);
-}, 7000);
+
+  // spawn again in 10–15 seconds
+  const nextDelay = Math.random() * 5000 + 10000;
+  setTimeout(spawnLoop, nextDelay);
+}
+
+// Start with an empty screen, then begin spawning
+window.addEventListener('load', () => {
+  setTimeout(spawnLoop, 2000); // slight delay before first flower appears
+});
